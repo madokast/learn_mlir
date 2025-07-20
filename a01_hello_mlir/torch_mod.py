@@ -34,15 +34,15 @@ class MyModel(nn.Module):
 
     def save_onnx(self, example_input:torch.Tensor, path=default_onnx_path):
         # pip install --upgrade onnx onnxscript
-        self.eval()
-        torch.onnx.export(
-            model=self,
-            args=(example_input, ),
-            f = path,
-            input_names=['input'],
-            output_names=['output'],
-            dynamo=True
-        )
+        import os
+        if not os.path.exists(path):
+            self.eval()
+            torch.onnx.export(
+                model=self,
+                args=(example_input, ),
+                f = path,
+                dynamo=True
+            )
 
 
 def fix_seed(seed:int):
@@ -66,13 +66,20 @@ if __name__ == '__main__':
         [0.1, 0.2, 0.3, 0.4],
         [0.5, 0.6, 0.7, 0.8]
     ])
-    y = model(x)
-
-    print(torch.__version__) # 2.9.0.dev20250719+cpu
-    print(x)
+    print("input", x, sep='\n')
 
     # tensor([[0.2262, 0.2880, 0.2197, 0.2661],
     #         [0.2218, 0.3190, 0.1965, 0.2627]], grad_fn=<SoftmaxBackward0>)
-    print(y)
+    print("torch infer", model(x), sep='\n')
 
     model.save_onnx(example_input=x)
+
+    from onnx_infer import infer
+
+    print("onnx infer")
+    # [array([[0.22616413, 0.28796327, 0.21973658, 0.26613602],
+    #   [0.22183387, 0.3190139 , 0.1964965 , 0.26265574]], dtype=float32)]
+    print(infer(
+        path=default_onnx_path,
+        input_data=x.numpy()
+    ))
