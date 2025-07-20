@@ -32,7 +32,7 @@ class MyModel(nn.Module):
         shape = list(prefix_shape) + [self.input_dim]
         return torch.rand(*shape)
 
-    def to_onnx(self, example_input:torch.Tensor, path=default_onnx_path):
+    def save_onnx(self, example_input:torch.Tensor, path=default_onnx_path):
         # pip install --upgrade onnx onnxscript
         self.eval()
         torch.onnx.export(
@@ -54,10 +54,10 @@ def fix_seed(seed:int):
 
 if __name__ == '__main__':
     import os
+    fix_seed(1)
 
     model = MyModel()
     if not os.path.exists(default_mod_weight_path):
-        fix_seed(1)
         model.save_weight()
     model.load_weight()
     model.eval()
@@ -75,4 +75,4 @@ if __name__ == '__main__':
     #         [0.2218, 0.3190, 0.1965, 0.2627]], grad_fn=<SoftmaxBackward0>)
     print(y)
 
-    model.to_onnx(x)
+    model.save_onnx(example_input=x)

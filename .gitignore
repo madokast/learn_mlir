@@ -1,7 +1,8 @@
 *.pt
 *.onnx
 *.onnx.data
-repos/
+*.whl
+llvm-project/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
