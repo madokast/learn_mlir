@@ -65,8 +65,6 @@ pip install onnxruntime
 
 通过 netron.app 可以查看模型结构
 
-运行 `a01_hello_mlir/onnx_infer.py` 用 onnx 进行推理
-
 # ONNX 导出 MLIR
 
 
