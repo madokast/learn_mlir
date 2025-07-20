@@ -1,4 +1,6 @@
 *.pt
+*.onnx
+*.onnx.data
 repos/
 
 # Byte-compiled / optimized / DLL files
