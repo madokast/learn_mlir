@@ -2,7 +2,10 @@
 *.onnx
 *.onnx.data
 *.whl
+*.tmp
+*.mlir
 llvm-project/
+onnx-mlir/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
