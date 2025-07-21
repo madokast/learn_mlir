@@ -34,6 +34,26 @@ https://github.com/onnx/onnx-mlir 仓库
 
 https://github.com/onnx/onnx-mlir/blob/main/docs/BuildOnLinuxOSX.md 安装手册
 
+安装 ninja `sudo apt install -y ninja-build`
+
+需要 `libprotobuf-dev` 先直接安装试试
+
+```
+cmake -G Ninja ../llvm \
+   -DLLVM_ENABLE_PROJECTS="mlir;clang;openmp" \
+   -DLLVM_TARGETS_TO_BUILD="host" \
+   -DCMAKE_BUILD_TYPE=Release \
+   -DLLVM_ENABLE_ASSERTIONS=ON \
+   -DLLVM_ENABLE_RTTI=ON \
+   -DENABLE_LIBOMPTARGET=OFF \
+   -DLLVM_ENABLE_LIBEDIT=OFF
+
+cmake --build . -- ${MAKEFLAGS}
+cmake --build . --target check-mlir
+```
+
+报错 /usr/bin/ld: /home/codespace/.python/current/lib/libpython3.12.a(import.o): relocation R_X86_64_TPOFF32 against hidden symbol `pkgcontext' can not be used when making a shared object
+
 ## IREE 安装
 
 进入目录 `iree-install`
